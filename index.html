@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <title>Node.js Server</title>
+</head>
+<body>
+  <input type="button" id="test" value="送信">
+  <script>
+    var sock = new WebSocket('ws://127.0.0.1:8080');
+
+    sock.addEventListener('open', function(e) {
+      console.log('Socket 接続成功');
+    });
+
+    sock.addEventListener('message', function(e) {
+      var data = JSON.parse(e.data);
+      console.log(data);
+      if(data == "ON")
+        document.body.style.background = "blue";
+      else
+        document.body.style.background = "green";
+    });
+
+    window.addEventListener('DOMContentLoaded', function(e) {
+      document.getElementById('test').addEventListener('click', function(e) {
+        sock.send('INDEX');
+      });
+    });
+  </script>
+</body>
+</html>
